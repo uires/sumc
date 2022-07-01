@@ -15,8 +15,11 @@ public class NewOrderMain {
 
         KafkaProducer<String, String> producer = new KafkaProducer<>(properties());
         var newOrder = new ProducerRecord<>("ECOMMERCE_NEW_ORDER", UUID.randomUUID().toString(), "7878,1500");
+        var emailRecord = new ProducerRecord<>("ECOMMERCE_SEND_EMAIL",
+                UUID.randomUUID().toString(), "We are processing your order.");
 
         producer.send(newOrder, handleProduceCallback()).get();
+        producer.send(emailRecord, handleProduceCallback()).get();
     }
 
     private static Callback handleProduceCallback() {
